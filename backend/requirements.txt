@@ -1,0 +1,7 @@
+fastapi>=0.110,<1.0
+uvicorn[standard]>=0.29
+sqlmodel>=0.0.16
+pydantic[email]>=2.6
+pydantic-settings>=2.2
+PyJWT>=2.8
+bcrypt>=4.1

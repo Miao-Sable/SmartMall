@@ -1,0 +1,22 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# 环境变量
+.env
+.env.local
+
+# 本地数据库
+*.db
+
+# 编辑器 / 系统文件
+.idea/
+.DS_Store
+Thumbs.db

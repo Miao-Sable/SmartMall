@@ -1,0 +1,55 @@
+[
+  {
+    "id": 1,
+    "barcode": "6901234567890",
+    "name": "花生夹心燕麦饼干",
+    "brand": "谷香食品",
+    "category": "饼干糕点",
+    "image_url": "",
+    "description": "燕麦谷物饼干，含花生夹心，独立小包装。",
+    "tags": [],
+    "ingredients": ["燕麦片", "小麦粉", "花生", "花生酱", "白砂糖", "食用盐", "碳酸氢钠"],
+    "nutrition": [
+      { "name": "能量", "value": "1980", "unit": "kJ" },
+      { "name": "蛋白质", "value": "8.5", "unit": "g" },
+      { "name": "脂肪", "value": "18.0", "unit": "g" },
+      { "name": "碳水化合物", "value": "62.0", "unit": "g" },
+      { "name": "钠", "value": "420", "unit": "mg" }
+    ]
+  },
+  {
+    "id": 2,
+    "barcode": "6901234567891",
+    "name": "纯牛奶（全脂）",
+    "brand": "牧原乳业",
+    "category": "乳制品",
+    "image_url": "",
+    "description": "100% 生牛乳，无添加。",
+    "tags": [],
+    "ingredients": ["生牛乳"],
+    "nutrition": [
+      { "name": "能量", "value": "272", "unit": "kJ" },
+      { "name": "蛋白质", "value": "3.2", "unit": "g" },
+      { "name": "脂肪", "value": "3.8", "unit": "g" },
+      { "name": "碳水化合物", "value": "4.8", "unit": "g" },
+      { "name": "钙", "value": "120", "unit": "mg" }
+    ]
+  },
+  {
+    "id": 3,
+    "barcode": "6901234567892",
+    "name": "无糖黑巧克力 72%",
+    "brand": "可可工坊",
+    "category": "零食",
+    "image_url": "",
+    "description": "72% 可可含量，不添加蔗糖。",
+    "tags": ["低糖", "素食"],
+    "ingredients": ["可可液块", "可可脂", "大豆卵磷脂"],
+    "nutrition": [
+      { "name": "能量", "value": "2350", "unit": "kJ" },
+      { "name": "蛋白质", "value": "9.0", "unit": "g" },
+      { "name": "脂肪", "value": "42.0", "unit": "g" },
+      { "name": "碳水化合物", "value": "30.0", "unit": "g" }
+    ]
+  }
+]

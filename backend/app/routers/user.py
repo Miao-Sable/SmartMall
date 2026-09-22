@@ -1,0 +1,54 @@
+"""用户档案：查看 / 更新（过敏源与饮食偏好关联）"""
+from fastapi import APIRouter, Depends
+from sqlmodel import Session, select
+
+from app.database import get_session
+from app.deps import get_current_user
+from app.models.user import User, UserAllergen, UserDiet, UserProfile
+from app.schemas.user import UserProfileOut, UserProfileUpdate
+
+router = APIRouter()
+
+
+@router.get("/profile", response_model=UserProfileOut)
+def get_profile(user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> UserProfileOut:
+    profile = session.exec(select(UserProfile).where(UserProfile.user_id == user.id)).first()
+    allergen_ids = [row.allergen_id for row in session.exec(select(UserAllergen).where(UserAllergen.user_id == user.id))]
+    diet_ids = [row.diet_id for row in session.exec(select(UserDiet).where(UserDiet.user_id == user.id))]
+    return UserProfileOut(
+        user_id=user.id,
+        email=user.email,
+        nickname=profile.nickname if profile else "",
+        gender=profile.gender if profile else "",
+        birth_year=profile.birth_year if profile else None,
+        allergen_ids=allergen_ids,
+        diet_ids=diet_ids,
+    )
+
+
+@router.put("/profile", response_model=UserProfileOut)
+def update_profile(
+    data: UserProfileUpdate,
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+) -> UserProfileOut:
+    profile = session.exec(select(UserProfile).where(UserProfile.user_id == user.id)).first()
+    if profile is None:
+        profile = UserProfile(user_id=user.id)
+        session.add(profile)
+    profile.nickname = data.nickname
+    profile.gender = data.gender
+    profile.birth_year = data.birth_year
+
+    # 全量替换过敏源 / 饮食偏好关联
+    for row in session.exec(select(UserAllergen).where(UserAllergen.user_id == user.id)):
+        session.delete(row)
+    for row in session.exec(select(UserDiet).where(UserDiet.user_id == user.id)):
+        session.delete(row)
+    for aid in data.allergen_ids:
+        session.add(UserAllergen(user_id=user.id, allergen_id=aid))
+    for did in data.diet_ids:
+        session.add(UserDiet(user_id=user.id, diet_id=did))
+
+    session.commit()
+    return get_profile(user=user, session=session)
