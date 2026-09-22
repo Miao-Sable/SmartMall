@@ -23,6 +23,7 @@ def get_profile(user: User = Depends(get_current_user), session: Session = Depen
         birth_year=profile.birth_year if profile else None,
         allergen_ids=allergen_ids,
         diet_ids=diet_ids,
+        onboarded=profile is not None,
     )
 
 

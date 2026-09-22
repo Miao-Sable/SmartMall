@@ -20,8 +20,8 @@ async function onSubmit() {
   loading.value = true
   try {
     await userStore.register({ email: email.value.trim(), password: password.value })
-    showToast({ message: '注册成功', type: 'success' })
-    router.replace('/profile/setup') // 引导设置档案
+    showToast({ message: '注册成功，请登录', type: 'success' })
+    router.replace('/login')
   } catch {
     // 注册失败已由拦截器提示
   } finally {

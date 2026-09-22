@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { showToast } from 'vant'
 import { getAllergensApi, getDietPreferencesApi, type Allergen, type DietPreference } from '@/api/meta'
 import { getProfileApi, updateProfileApi } from '@/api/user'
+
+const route = useRoute()
+const router = useRouter()
+// 从登录页进入（首次引导）时展示「跳过」；保存后据此决定去向
+const isOnboarding = route.query.from === 'login'
+const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
 
 const nickname = ref('')
 const allergenIds = ref<number[]>([])
@@ -37,11 +44,22 @@ function toggleIn(list: number[], id: number) {
   else list.push(id)
 }
 
+async function onSkip() {
+  // 跳过也要标记「已完成引导」：写入空档案（创建 profile 行），下次登录不再引导
+  try {
+    await updateProfileApi({})
+  } catch {
+    // 忽略失败，下次登录仍会引导
+  }
+  router.replace(redirect)
+}
+
 async function onSave() {
   saving.value = true
   try {
     await updateProfileApi({ nickname: nickname.value, allergen_ids: allergenIds.value, diet_ids: dietIds.value })
     showToast({ message: '保存成功', type: 'success' })
+    if (isOnboarding) router.replace(redirect)
   } catch {
     // 拦截器已统一提示
   } finally {
@@ -95,6 +113,7 @@ async function onSave() {
 
       <div class="save-wrap">
         <van-button block round type="primary" :loading="saving" @click="onSave">保存</van-button>
+        <van-button v-if="isOnboarding" block round plain type="primary" class="skip" @click="onSkip">跳过，稍后填写</van-button>
       </div>
     </template>
   </div>
@@ -107,5 +126,8 @@ async function onSave() {
 }
 .save-wrap {
   margin: 24px 16px;
+}
+.skip {
+  margin-top: 12px;
 }
 </style>

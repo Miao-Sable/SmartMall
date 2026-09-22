@@ -10,6 +10,7 @@ class UserProfileOut(BaseModel):
     birth_year: int | None = None
     allergen_ids: list[int] = []
     diet_ids: list[int] = []
+    onboarded: bool = False
 
 
 class UserProfileUpdate(BaseModel):

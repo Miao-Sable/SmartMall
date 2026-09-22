@@ -21,7 +21,13 @@ async function onSubmit() {
   try {
     await userStore.login(email.value.trim(), password.value)
     showToast({ message: '登录成功', type: 'success' })
-    router.replace((route.query.redirect as string) || '/')
+    // 首次登录（尚未建立档案）时引导填写个人信息表，可跳过；老用户直接进入
+    const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : undefined
+    if (userStore.profile?.onboarded) {
+      router.replace(redirect || '/')
+    } else {
+      router.replace({ path: '/profile/setup', query: { from: 'login', ...(redirect ? { redirect } : {}) } })
+    }
   } catch {
     // 登录失败已由拦截器提示
   } finally {

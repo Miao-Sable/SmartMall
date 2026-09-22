@@ -8,6 +8,7 @@ export interface UserProfile {
   birth_year: number | null
   allergen_ids: number[]
   diet_ids: number[]
+  onboarded: boolean
 }
 
 export interface UserProfileUpdate {
